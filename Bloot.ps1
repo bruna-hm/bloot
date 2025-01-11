@@ -1,6 +1,5 @@
 #Bloot
 
-do {
 $banner = @"
 
  ________  ___       ________  ________  _________   
@@ -14,6 +13,8 @@ $banner = @"
                                                      
                                                      
 "@
+
+do {
 
 Write-Host $banner -ForegroundColor Yellow
 	
@@ -32,17 +33,29 @@ $opcao = Read-Host -Prompt "`nOpção"
 switch ($opcao) {
 	"1" { 
 		Get-NetIPAddress -AddressFamily IPv4 |
-		ForEach-Object{ "IPv4 - $(($_.IPAddress)) | Interface - $(($_.InterfaceAlias))" }
+		ForEach-Object{ "IPv4 - $(($_.IPAddress)) | Interface - $(($_.InterfaceAlias))" }	
+		Write-Host "`nAperte qualquer tecla para continuar..."
+		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
-	"2" {Get-Printer}
-	"3" {Get-PrinterPort}
+	"2" {
+		Get-Printer
+		Write-Host "`nAperte qualquer tecla para continuar..."
+		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
+	}
+	"3" {
+		Get-PrinterPort
+		Write-Host "`nAperte qualquer tecla para continuar..."
+		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
+	}
 	"4" {
 		$ip = Read-Host "`nDigite o IP"
+		Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste..."
 		Test-Connection -Repeat -TargetName $ip
 	}
 	"5" {
 		$ip = Read-Host "`nDigite o IP"
 		Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste..."
+		Write-Output "O log será escrito no mesmo local onde está o Script"
 		"Target = " + $ip | Out-File .\$($ip)_LOG.txt
 		Test-Connection -Repeat -TargetName $ip| 
 		ForEach-Object { 
@@ -53,6 +66,8 @@ switch ($opcao) {
 		Write-Output "`nReiniciando serviço..."
 		Restart-Service -Name Spooler
 		Write-Output "Serviço reiniciado."
+		Write-Host "`nAperte qualquer tecla para continuar..."
+		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	{"S", "s" -contains $_} { break }
 	default {Write-Output "`nEssa opção não existe!"}
