@@ -1,6 +1,5 @@
 #Bloot
 
-
  ________  ___       ________  ________  _________   
 |\   __  \|\  \     |\   __  \|\   __  \|\___   ___\ 
 \ \  \|\ /\ \  \    \ \  \|\  \ \  \|\  \|___ \  \_| 
@@ -11,6 +10,7 @@
                                                      
                                                      
                                                      
+
 
 Script simples para automação de certas atividades com impressoras e rede que realizo no dia-a-dia.
 
