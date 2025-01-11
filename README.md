@@ -1,8 +1,17 @@
-#Bloot
+```
+ ________  ___       ________  ________  _________   
+|\   __  \|\  \     |\   __  \|\   __  \|\___   ___\ 
+\ \  \|\ /\ \  \    \ \  \|\  \ \  \|\  \|___ \  \_| 
+ \ \   __  \ \  \    \ \  \\\  \ \  \\\  \   \ \  \  
+  \ \  \|\  \ \  \____\ \  \\\  \ \  \\\  \   \ \  \ 
+   \ \_______\ \_______\ \_______\ \_______\   \ \__\
+    \|_______|\|_______|\|_______|\|_______|    \|__|
+                                                     
+```
 
-Script simples de interface de linha de comando para automação de certas atividades com <strong>impressoras e rede</strong> que realizo no dia-a-dia.
+Bloot é uma ferramenta de Script simples. USa interface de linha de comando para automação de certas atividades com <strong>impressoras e rede</strong> que realizo no dia-a-dia.
 
-##Como Usar
+## Como Usar
 <ol>
   <li>Faça o download do Script</li>
   <li>Abra o Powershell com direitos de administrador</li>
