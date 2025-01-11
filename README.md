@@ -9,8 +9,8 @@
                                                      
 ```
 
-Bloot é uma ferramenta de Script simples. Usa interface de linha de comando para automação de certas atividades com <strong>impressoras e rede</strong> que realizo no dia-a-dia.
-<br>Dessa forma não preciso abrir muitas janelas no Windows apra verificar algumas informações.
+Bloot é uma ferramenta de Script simples. Usa interface de linha de comando para automação de certas atividades com <strong>impressoras e rede</strong>.
+<br>Dessa forma não preciso abrir muitas janelas no Windows para verificar algumas informações que utilizo bastante no dia-a-dia.
   
 Plataforma de uso: <ins>Windows Powershell</ins>
 
