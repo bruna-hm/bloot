@@ -1,18 +1,6 @@
 #Bloot
 
- ________  ___       ________  ________  _________   
-|\   __  \|\  \     |\   __  \|\   __  \|\___   ___\ 
-\ \  \|\ /\ \  \    \ \  \|\  \ \  \|\  \|___ \  \_| 
- \ \   __  \ \  \    \ \  \\\  \ \  \\\  \   \ \  \  
-  \ \  \|\  \ \  \____\ \  \\\  \ \  \\\  \   \ \  \ 
-   \ \_______\ \_______\ \_______\ \_______\   \ \__\
-    \|_______|\|_______|\|_______|\|_______|    \|__|
-                                                     
-                                                     
-                                                     
-
-
-Script simples para automação de certas atividades com impressoras e rede que realizo no dia-a-dia.
+Script simples de interface de linha de comando para automação de certas atividades com <strong>impressoras e rede</strong> que realizo no dia-a-dia.
 
 ##Como Usar
 <ol>
