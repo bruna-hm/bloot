@@ -13,7 +13,7 @@ Bloot é uma ferramenta de Script simples. Usa interface de linha de comando par
 <br>Dessa forma não preciso abrir muitas janelas no Windows para verificar algumas informações que utilizo bastante no dia-a-dia.
 Também feito para estudos em Powershell, já que antes só havia feito scripts em batch para tarefas específicas.  
   
-PAra uso em SO's <ins>Windows</ins>
+Para uso em SO's <ins>Windows</ins>
 
 ## Como Usar
 <ol>

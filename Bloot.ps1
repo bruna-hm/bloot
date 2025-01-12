@@ -37,6 +37,16 @@ ForEach-Object {
 $opcao = Read-Host -Prompt "`nOpção"
 Write-Output ""
 
+function IpParser {
+	param (
+		[string]$ip
+	)
+	if ($ip -match '^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$')
+	{
+	return $true 
+	} return $false
+}
+
 switch ($opcao) {
 	"1" {
 		Get-NetIPAddress -AddressFamily IPv4 |
@@ -86,20 +96,28 @@ switch ($opcao) {
 				"2" {
 					do {
 					$ip = Read-Host "`nDigite o IP"
-					Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste em outra janela..."
-					Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip"
-					$continuar = Read-Host "`nFazer mais um teste? (S/N)"
+					if (IpParser $ip) {
+						Write-Output "`nIniciando teste em outra janela..."
+						Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip"
+					} else {
+						Write-Host "`nIP Inválido" -ForegroundColor DarkRed
+					}
+					$continuar = Read-Host "`nContinuar no teste? (S/N)"
 					} while ($continuar -ne "N" -and $continuar -ne "n")
 				}
 				"3" {
 					do {
 					$ip = Read-Host "`nDigite o IP"
-					Write-Output "`nIniciando teste..."
-					Write-Output "O LOG será escrito no mesmo local onde está o Script"
-					"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
-					Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip >> .\$($ip)_LOG.txt"
-					Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkRed
-					$continuar = Read-Host "Fazer mais um teste com LOG? (S/N)"
+					if (IpParser $ip) {
+						Write-Output "`nIniciando teste..."
+						Write-Output "O LOG será escrito no mesmo local onde está o Script"
+						"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
+						Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip >> .\$($ip)_LOG.txt"
+						Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkRed
+					} else {
+						Write-Host "`nIP Inválido" -ForegroundColor DarkRed
+					}
+					$continuar = Read-Host "Continuar no teste com LOG? (S/N)"
 					} while ($continuar -ne "N"  -and $continuar -ne "n")
 				}
 				{"V", "v" -contains $_} { break }

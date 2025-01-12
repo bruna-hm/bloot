@@ -1,0 +1,13 @@
+TARGET = 192.168.15.1
+
+Disparando 192.168.15.1 com 32 bytes de dados:
+Resposta de 192.168.15.1: bytes=32 tempo=2ms TTL=64
+Resposta de 192.168.15.1: bytes=32 tempo=3ms TTL=64
+Resposta de 192.168.15.1: bytes=32 tempo=2ms TTL=64
+Resposta de 192.168.15.1: bytes=32 tempo=4ms TTL=64
+
+Estat¡sticas do Ping para 192.168.15.1:
+    Pacotes: Enviados = 4, Recebidos = 4, Perdidos = 0 (0% de
+             perda),
+Aproximar um n£mero redondo de vezes em milissegundos:
+    M¡nimo = 2ms, M ximo = 4ms, M‚dia = 2ms
