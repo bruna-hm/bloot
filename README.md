@@ -13,7 +13,7 @@ Bloot é uma ferramenta de Script simples. Usa interface de linha de comando par
 <br>Dessa forma não preciso abrir muitas janelas no Windows para verificar algumas informações que utilizo bastante no dia-a-dia.
 Também feito para estudos em Powershell, já que antes só havia feito scripts em batch para tarefas específicas.  
   
-Plataforma de uso: <ins>Windows Powershell</ins>
+PAra uso em SO's <ins>Windows</ins>
 
 ## Como Usar
 <ol>
@@ -22,3 +22,18 @@ Plataforma de uso: <ins>Windows Powershell</ins>
   <li>Utilize o <strong>caminho absoluto</strong> ou vá até o <strong>diretório onde está o script</strong>.</li>
   <li>Digite: <strong>.\Bloot.ps1</strong></li>
 </ol>
+
+## Funcionalidades
+
+Você pode visualizar as funcionalidades do Menu assim:
+
+Menu
+ |-1 - Ip's versão 4 adaptadores
+ |-2- Impressoras Instaladas
+ |-3 - Drivers de Impressoras
+ |-4 - Portas de impressoras
+ |-5 - Testes de Conectividade --------------- TESTES
+ |-6 - Reiniciar Spooler de impressão             |- 1 - Disgnóstico Rápido
+ |-S/s - Sair                                     |- 2 - Ping em repetição   
+												  |- 3 - Ping com LOG
+												  |- V/v - Voltar

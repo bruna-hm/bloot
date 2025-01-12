@@ -22,10 +22,17 @@ Write-Output "1 - Ip's versão 4 adaptadores"
 Write-Output "2 - Impressoras Instaladas"
 Write-Output "3 - Drivers de Impressoras"
 Write-Output "4 - Portas de impressoras"
-Write-Output "5 - Teste de Comunicação de Rede"
-Write-Output "6 - Teste de Comunicação de Rede com Log"
-Write-OutPut "7 - Reiniciar Spooler de impressão"
-Write-Output "S/s - Sair"
+Write-Output "5 - Testes de Conectividade"
+Write-OutPut "6 - Reiniciar Spooler de impressão"
+Write-Output "S/s - Sair`n"
+
+Get-CimInstance -ClassName Win32_ComputerSystem | 
+ForEach-Object {
+	Write-Host "Nome:" -NoNewLine
+	Write-Host "$(($_.Name))" -ForegroundColor DarkMAgenta -NoNewLine
+	Write-Host " Domain:" -NoNewLine
+	Write-Host "$(($_.Domain))" -ForegroundColor DarkGreen 
+}
 
 $opcao = Read-Host -Prompt "`nOpção"
 Write-Output ""
@@ -35,7 +42,6 @@ switch ($opcao) {
 		Get-NetIPAddress -AddressFamily IPv4 |
 		Select-Object IPAddress, InterfaceAlias |
 		Format-Table -AutoSize
-
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
@@ -61,21 +67,46 @@ switch ($opcao) {
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"5" {
-		$ip = Read-Host "`nDigite o IP"
-		Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste..."
-		Test-Connection -Repeat -TargetName $ip
-	}
+		do {
+		Write-Output "`n          TESTES`n"
+		Write-Output "1 - Disgnóstico Rápido"
+		Write-OutPut "2 - Ping em repetição"
+		Write-Output "3 - Ping com LOG"
+		Write-OutPut "V/v - Voltar"
+		
+		$opcRede = Read-Host "`nOpção"
+		
+			switch ($opcRede) {
+				"1" {
+					$ip = Read-Host "`nDigite o IP"
+					Test-NetConnection -ComputerName $ip
+					Write-Host "`nAperte qualquer tecla para continuar..."
+					$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
+				}
+				"2" {
+					$ip = Read-Host "`nDigite o IP"
+					Start-Process powershell -ArgumentList "-NoExit", "-Command", "Test-Connection -Repeat -TargetName $ip"
+					Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste..."
+					Test-Connection -Repeat -TargetName $ip
+				}
+				"3" {
+					$ip = Read-Host "`nDigite o IP"
+					$key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+					Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste..."
+					Write-Output "O log será escrito no mesmo local onde está o Script"
+					"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
+					Test-Connection -Repeat -TargetName $ip| 
+					ForEach-Object { 
+					"$((Get-Date)) - Status: $(($_.Status)) - Tempo de resposta: $(($_.Latency))ms" }|
+					Out-File -FilePath .\$($ip)_LOG.txt -Append 
+				}
+				{"V", "v" -contains $_} { break }
+				default {Write-Host "`nEssa opção não existe!" -ForegroundColor DarkRed}
+			}
+			
+		} while ($opcRede -ne "V" -and $opcRede -ne "v")
+	}	
 	"6" {
-		$ip = Read-Host "`nDigite o IP"
-		Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste..."
-		Write-Output "O log será escrito no mesmo local onde está o Script"
-		"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
-		Test-Connection -Repeat -TargetName $ip| 
-		ForEach-Object { 
-		"$((Get-Date)) - Status: $(($_.Status)) - Tempo de resposta: $(($_.Latency))ms" }|
-		Out-File -FilePath .\$($ip)_LOG.txt -Append
-	}
-	"7" {
 		Write-Output "`nReiniciando serviço..." 
 		Restart-Service -Name Spooler
 		Write-Host "Serviço reiniciado." -ForegroundColor Blue
@@ -85,5 +116,4 @@ switch ($opcao) {
 	{"S", "s" -contains $_} { break }
 	default {Write-Host "`nEssa opção não existe!" -ForegroundColor DarkRed}
 }
-
 } while ($opcao -ne "S" -and $opcao -ne "s")
