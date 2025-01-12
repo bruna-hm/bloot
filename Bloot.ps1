@@ -31,12 +31,12 @@ $opcao = Read-Host -Prompt "`nOpção"
 Write-Output ""
 
 switch ($opcao) {
-	"1" { 
+	"1" {
 		Get-NetIPAddress -AddressFamily IPv4 |
 		ForEach-Object{ 
 		Write-Host "IPv4 -" -NoNewline
         Write-Host " $(($_.IPAddress))" -ForegroundColor DarkGreen -NoNewline
-        Write-Host " | Interface -" -NoNewline
+        Write-Host "  Interface -" -NoNewline
         Write-Host " $(($_.InterfaceAlias))" -ForegroundColor DarkCyan
 		}	
 		Write-Host "`nAperte qualquer tecla para continuar..."
@@ -104,7 +104,7 @@ switch ($opcao) {
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	{"S", "s" -contains $_} { break }
-	default {Write-Output "`nEssa opção não existe!"}
+	default {Write-Host "`nEssa opção não existe!" -ForegroundColor DarkRed}
 }
 
 } while ($opcao -ne "S" -and $opcao -ne "s")
