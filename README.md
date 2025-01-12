@@ -27,6 +27,7 @@ PAra uso em SO's <ins>Windows</ins>
 
 Você pode visualizar as funcionalidades do Menu assim:
 
+```
 MENU
  |-1 - Ip's versão 4 adaptadores
  |-2- Impressoras Instaladas
@@ -40,4 +41,5 @@ MENU
  |		|- V/v - Voltar
  | 						
  |-6 - Reiniciar Spooler de impressão
- |-S/s - Sair 
+ |-S/s - Sair
+ ```
