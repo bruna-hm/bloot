@@ -36,6 +36,6 @@ Menu
  |-5 - Testes de Conectividade --------------- TESTES
  |-6 - Reiniciar Spooler de impressão             |- 1 - Disgnóstico Rápido
  |-S/s - Sair                                     |- 2 - Ping em repetição   
-												  |- 3 - Ping com LOG
-												  |- V/v - Voltar
+							|- 3 - Ping com LOG
+							|- V/v - Voltar
 ```
