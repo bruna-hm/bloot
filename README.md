@@ -27,6 +27,7 @@ PAra uso em SO's <ins>Windows</ins>
 
 Você pode visualizar as funcionalidades do Menu assim:
 
+```
 Menu
  |-1 - Ip's versão 4 adaptadores
  |-2- Impressoras Instaladas
@@ -37,3 +38,4 @@ Menu
  |-S/s - Sair                                     |- 2 - Ping em repetição   
 												  |- 3 - Ping com LOG
 												  |- V/v - Voltar
+```
