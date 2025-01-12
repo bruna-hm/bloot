@@ -47,30 +47,51 @@ function IpParser {
 	} return $false
 }
 
+function Waiting {
+	param (
+		[Parameter(Mandatory=$true)]
+        [ScriptBlock]$Command
+	)
+	$Symbols = @('o', 'O', 'o', 'O')
+    $SymbolIndex = 0
+    $Job = Start-Job -ScriptBlock $Command
+	while ($Job.State -eq 'Running') {
+        if ($SymbolIndex -ge $Symbols.Count) {
+            $SymbolIndex = 0
+        }
+        Write-Host -NoNewline -Object ("  {0}`b" -f $Symbols[$SymbolIndex++]) -ForegroundColor Green
+        Start-Sleep -Milliseconds 200
+    }
+	$Job | Wait-Job
+    Write-Host "`n"
+	Receive-Job -Job $Job
+    Remove-Job -Job $Job
+}	
+
 switch ($opcao) {
 	"1" {
-		Get-NetIPAddress -AddressFamily IPv4 |
+		Waiting -Command {Get-NetIPAddress -AddressFamily IPv4} |
 		Select-Object IPAddress, InterfaceAlias |
 		Format-Table -AutoSize
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"2" {
-		Get-Printer |
+		Waiting -Command {Get-Printer} |
 		Select-Object Name, DriverName, Shared |
 		Format-Table -AutoSize
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"3" {
-		Get-PrinterDriver |
+		Waiting -Command {Get-PrinterDriver} |
 		Select-Object Name, Manufacturer, PrinterEnvironment |
 		Format-Table -AutoSize
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"4" {
-		Get-PrinterPort |
+		Waiting -Command {Get-PrinterPort} |
 		Select-Object Name, Description, PortMonitor | 
 		Format-Table -AutoSize
 		Write-Host "`nAperte qualquer tecla para continuar..."
@@ -88,10 +109,15 @@ switch ($opcao) {
 		
 			switch ($opcRede) {
 				"1" {
+					do {
 					$ip = Read-Host "`nDigite o IP"
-					Test-NetConnection -ComputerName $ip
-					Write-Host "`nAperte qualquer tecla para continuar..."
-					$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
+					if (IpParser $ip) {
+						Test-NetConnection -ComputerName $ip
+					} else {
+						Write-Host "`nIP Inválido" -ForegroundColor DarkRed
+					}
+					$continuar = Read-Host "`nContinuar no teste? (S/N)"
+					} while ($continuar -ne "N" -and $continuar -ne "n")
 				}
 				"2" {
 					do {
@@ -128,7 +154,7 @@ switch ($opcao) {
 	}	
 	"6" {
 		Write-Output "`nReiniciando serviço..." 
-		Restart-Service -Name Spooler
+		Waiting -Command {Restart-Service -Name Spooler}
 		Write-Host "Serviço reiniciado." -ForegroundColor Blue
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
