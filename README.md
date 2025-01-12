@@ -27,7 +27,6 @@ PAra uso em SO's <ins>Windows</ins>
 
 Você pode visualizar as funcionalidades do Menu assim:
 
-```
 MENU
  |-1 - Ip's versão 4 adaptadores
  |-2- Impressoras Instaladas
@@ -35,11 +34,10 @@ MENU
  |-4 - Portas de impressoras
  |-5 - Testes de Conectividade 
  | |-------- TESTES
- | 				|- 1 - Disgnóstico Rápido
- |				|- 2 - Ping em repetição
- |				|- 3 - Ping com LOG
- |				|- V/v - Voltar
+ | 		|- 1 - Disgnóstico Rápido
+ |		|- 2 - Ping em repetição
+ |		|- 3 - Ping com LOG
+ |		|- V/v - Voltar
  | 						
  |-6 - Reiniciar Spooler de impressão
  |-S/s - Sair 
-```
