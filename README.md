@@ -33,9 +33,13 @@ MENU
  |-2- Impressoras Instaladas
  |-3 - Drivers de Impressoras
  |-4 - Portas de impressoras
- |-5 - Testes de Conectividade --------------- TESTES
- |-6 - Reiniciar Spooler de impressão             |- 1 - Disgnóstico Rápido
- |-S/s - Sair                                     |- 2 - Ping em repetição   
-						  |- 3 - Ping com LOG
-						  |- V/v - Voltar
+ |-5 - Testes de Conectividade 
+ | |-------- TESTES
+ | 				|- 1 - Disgnóstico Rápido
+ |				|- 2 - Ping em repetição
+ |				|- 3 - Ping com LOG
+ |				|- V/v - Voltar
+ | 						
+ |-6 - Reiniciar Spooler de impressão
+ |-S/s - Sair 
 ```
