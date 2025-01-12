@@ -25,7 +25,7 @@ PAra uso em SO's <ins>Windows</ins>
 
 ## Funcionalidades
 
-Você pode visualizar as funcionalidades do Menu assim:
+Visualização de funcionalidades:
 
 ```
 MENU
