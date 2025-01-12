@@ -84,21 +84,23 @@ switch ($opcao) {
 					$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 				}
 				"2" {
+					do {
 					$ip = Read-Host "`nDigite o IP"
-					Start-Process powershell -ArgumentList "-NoExit", "-Command", "Test-Connection -Repeat -TargetName $ip"
-					Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste..."
-					Test-Connection -Repeat -TargetName $ip
+					Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste em outra janela..."
+					Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip"
+					$continuar = Read-Host "`nFazer mais um teste? (S/N)"
+					} while ($continuar -ne "N" -and $continuar -ne "n")
 				}
 				"3" {
+					do {
 					$ip = Read-Host "`nDigite o IP"
-					$key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-					Write-Output "`nPara interromper o teste aperte Ctrl-C. `nIniciando teste..."
-					Write-Output "O log será escrito no mesmo local onde está o Script"
+					Write-Output "`nIniciando teste..."
+					Write-Output "O LOG será escrito no mesmo local onde está o Script"
 					"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
-					Test-Connection -Repeat -TargetName $ip| 
-					ForEach-Object { 
-					"$((Get-Date)) - Status: $(($_.Status)) - Tempo de resposta: $(($_.Latency))ms" }|
-					Out-File -FilePath .\$($ip)_LOG.txt -Append 
+					Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip >> .\$($ip)_LOG.txt"
+					Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkRed
+					$continuar = Read-Host "Fazer mais um teste com LOG? (S/N)"
+					} while ($continuar -ne "N"  -and $continuar -ne "n")
 				}
 				{"V", "v" -contains $_} { break }
 				default {Write-Host "`nEssa opção não existe!" -ForegroundColor DarkRed}
