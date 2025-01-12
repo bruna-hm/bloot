@@ -17,14 +17,15 @@ do {
 
 Write-Host $banner -ForegroundColor DarkYellow
 	
-Write-Output "`n             MENU`n"
+Write-Host "`n             MENU`n" -ForegroundColor DarkYellow
 Write-Output "1 - Ip's versão 4 adaptadores"
 Write-Output "2 - Impressoras Instaladas"
 Write-Output "3 - Drivers de Impressoras"
 Write-Output "4 - Portas de impressoras"
 Write-Output "5 - Testes de Conectividade"
 Write-OutPut "6 - Reiniciar Spooler de impressão"
-Write-Output "S/s - Sair`n"
+Write-host "S/s " -ForegroundColor DarkRed -NoNewLine
+Write-Host "- Sair`n"
 
 Get-CimInstance -ClassName Win32_ComputerSystem | 
 ForEach-Object {
@@ -52,14 +53,14 @@ function Waiting {
 		[Parameter(Mandatory=$true)]
         [ScriptBlock]$Command
 	)
-	$Symbols = @('o', 'O', 'o', 'O')
+	$Symbols = @('|', '/', '-', '\')
     $SymbolIndex = 0
     $Job = Start-Job -ScriptBlock $Command
 	while ($Job.State -eq 'Running') {
         if ($SymbolIndex -ge $Symbols.Count) {
             $SymbolIndex = 0
         }
-        Write-Host -NoNewline -Object ("  {0}`b" -f $Symbols[$SymbolIndex++]) -ForegroundColor Green
+        Write-Host -NoNewline -Object ("{0}`b" -f $Symbols[$SymbolIndex++]) -ForegroundColor Cyan
         Start-Sleep -Milliseconds 200
     }
 	$Job | Wait-Job
@@ -99,11 +100,12 @@ switch ($opcao) {
 	}
 	"5" {
 		do {
-		Write-Output "`n          TESTES`n"
+		Write-Host "`n          TESTES`n" -ForegroundColor DarkYellow
 		Write-Output "1 - Disgnóstico Rápido"
 		Write-OutPut "2 - Ping em repetição"
 		Write-Output "3 - Ping com LOG"
-		Write-OutPut "V/v - Voltar"
+		Write-Host "V/v " -ForegroundColor DarkRed -NoNewline
+		Write-Host "- Voltar"
 		
 		$opcRede = Read-Host "`nOpção"
 		
@@ -111,43 +113,44 @@ switch ($opcao) {
 				"1" {
 					do {
 					$ip = Read-Host "`nDigite o IP"
-					if (IpParser $ip) {
-						Test-NetConnection -ComputerName $ip
-					} else {
-						Write-Host "`nIP Inválido" -ForegroundColor DarkRed
-					}
-					$continuar = Read-Host "`nContinuar no teste? (S/N)"
+						if (IpParser $ip) {
+							Test-NetConnection -ComputerName $ip
+							$continuar = Read-Host "`nContinuar no teste? (S/N)"
+						} else {
+							Write-Host "`nIP Inválido" -ForegroundColor Red
+							$continuar = Read-Host "`nContinuar no teste? (S/N)"
+						}
 					} while ($continuar -ne "N" -and $continuar -ne "n")
 				}
 				"2" {
 					do {
 					$ip = Read-Host "`nDigite o IP"
-					if (IpParser $ip) {
-						Write-Output "`nIniciando teste em outra janela..."
-						Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip"
-					} else {
-						Write-Host "`nIP Inválido" -ForegroundColor DarkRed
-					}
+						if (IpParser $ip) {
+							Write-Output "`nIniciando teste em outra janela..."
+							Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip"
+						} else {
+							Write-Host "`nIP Inválido" -ForegroundColor Red
+						}
 					$continuar = Read-Host "`nContinuar no teste? (S/N)"
 					} while ($continuar -ne "N" -and $continuar -ne "n")
 				}
 				"3" {
 					do {
 					$ip = Read-Host "`nDigite o IP"
-					if (IpParser $ip) {
-						Write-Output "`nIniciando teste..."
-						Write-Output "O LOG será escrito no mesmo local onde está o Script"
-						"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
-						Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip >> .\$($ip)_LOG.txt"
-						Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkRed
-					} else {
-						Write-Host "`nIP Inválido" -ForegroundColor DarkRed
-					}
+						if (IpParser $ip) {
+							Write-Output "`nIniciando teste..."
+							Write-Output "O LOG será escrito no mesmo local onde está o Script"
+							"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
+							Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip >> .\$($ip)_LOG.txt"
+							Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkRed
+						} else {
+							Write-Host "`nIP Inválido" -ForegroundColor Red
+						}
 					$continuar = Read-Host "Continuar no teste com LOG? (S/N)"
 					} while ($continuar -ne "N"  -and $continuar -ne "n")
 				}
 				{"V", "v" -contains $_} { break }
-				default {Write-Host "`nEssa opção não existe!" -ForegroundColor DarkRed}
+				default {Write-Host "`nEssa opção não existe!" -ForegroundColor Red}
 			}
 			
 		} while ($opcRede -ne "V" -and $opcRede -ne "v")
@@ -160,6 +163,6 @@ switch ($opcao) {
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	{"S", "s" -contains $_} { break }
-	default {Write-Host "`nEssa opção não existe!" -ForegroundColor DarkRed}
+	default {Write-Host "`nEssa opção não existe!" -ForegroundColor Red}
 }
 } while ($opcao -ne "S" -and $opcao -ne "s")
