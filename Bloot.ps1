@@ -33,51 +33,30 @@ Write-Output ""
 switch ($opcao) {
 	"1" {
 		Get-NetIPAddress -AddressFamily IPv4 |
-		ForEach-Object{ 
-		Write-Host "IPv4 -" -NoNewline
-        Write-Host " $(($_.IPAddress))" -ForegroundColor DarkGreen -NoNewline
-        Write-Host "  Interface -" -NoNewline
-        Write-Host " $(($_.InterfaceAlias))" -ForegroundColor DarkCyan
-		}	
+		Select-Object IPAddress, InterfaceAlias |
+		Format-Table -AutoSize
+
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"2" {
 		Get-Printer |
-		ForEach-Object{
-		Write-Host "Nome - " -NoNewLine
-		Write-Host "$(($_.Name))" -ForegroundColor Magenta -NoNewLine
-		Write-Host " Driver - " -NoNewLine
-		Write-Host "$(($_.DriverName))" -ForegroundColor DarkMagenta -NoNewline
-		Write-Host " Compartilhada - " -NoNewLine
-		Write-Host "$(($_.Shared))" -ForegroundColor Blue
-		}
+		Select-Object Name, DriverName, Shared |
+		Format-Table -AutoSize
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"3" {
 		Get-PrinterDriver |
-		ForEach-Object {
-		Write-Host "Nome - " -NoNewLine
-		Write-Host "$(($_.Name))" -ForegroundColor Magenta -NoNewLine
-		Write-Host " Fabricante - " -NoNewLine
-		Write-Host "$(($_.Manufacturer))" -ForegroundColor DarkMagenta -NoNewLine
-		Write-Host " PrinterEnv - "
-		Write-Host "$(($_.PrinterEnvironment))" -ForegroundColor DarkBlue 
-		}
+		Select-Object Name, Manufacturer, PrinterEnvironment |
+		Format-Table -AutoSize
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"4" {
 		Get-PrinterPort |
-		ForEach-Object {
-		Write-Host "Nome - " -NoNewLine
-		Write-Host "$(($_.Name))" -ForegroundColor Magenta -NoNewLine
-		Write-Host " Descrição - " -NoNewLine
-		Write-Host "$(($_.Description))" -ForegroundColor DarkMagenta -NoNewLine
-		Write-Host "- PortMonitor - " -NoNewline
-		Write-Host "$(($_.PortMonitor))" -ForegroundColor DarkBlue
-		}
+		Select-Object Name, Description, PortMonitor | 
+		Format-Table -AutoSize
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
