@@ -114,7 +114,8 @@ switch ($opcao) {
 					do {
 					$ip = Read-Host "`nDigite o IP"
 						if (IpParser $ip) {
-							Test-NetConnection -ComputerName $ip
+							$diagn = Test-NetConnection -ComputerName $ip
+							$diagn
 							$continuar = Read-Host "`nContinuar no teste? (S/N)"
 						} else {
 							Write-Host "`nIP Inválido" -ForegroundColor Red
@@ -142,7 +143,7 @@ switch ($opcao) {
 							Write-Output "O LOG será escrito no mesmo local onde está o Script"
 							"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
 							Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip >> .\$($ip)_LOG.txt"
-							Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkRed
+							Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkGreen
 						} else {
 							Write-Host "`nIP Inválido" -ForegroundColor Red
 						}
