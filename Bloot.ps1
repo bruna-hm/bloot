@@ -18,24 +18,24 @@ do {
 Write-Host $banner -ForegroundColor DarkYellow
 	
 Write-Host "`n             MENU`n" -ForegroundColor DarkYellow
-Write-Output "1 - Ip's versão 4 adaptadores"
+Write-Output "1 - Ip's versao 4 adaptadores"
 Write-Output "2 - Impressoras Instaladas"
 Write-Output "3 - Drivers de Impressoras"
 Write-Output "4 - Portas de impressoras"
 Write-Output "5 - Testes de Conectividade"
-Write-OutPut "6 - Reiniciar Spooler de impressão"
+Write-OutPut "6 - Reiniciar Spooler de impressao"
 Write-host "S/s " -ForegroundColor DarkRed -NoNewLine
 Write-Host "- Sair`n"
 
 Get-CimInstance -ClassName Win32_ComputerSystem | 
 ForEach-Object {
 	Write-Host "Nome:" -NoNewLine
-	Write-Host "$(($_.Name))" -ForegroundColor DarkMAgenta -NoNewLine
+	Write-Host "$(($_.Name))" -ForegroundColor DarkGreen -NoNewLine
 	Write-Host " Domain:" -NoNewLine
 	Write-Host "$(($_.Domain))" -ForegroundColor DarkGreen 
 }
 
-$opcao = Read-Host -Prompt "`nOpção"
+$opcao = Read-Host -Prompt "`nOpcao"
 Write-Output ""
 
 function IpParser {
@@ -101,21 +101,21 @@ switch ($opcao) {
 	"5" {
 		do {
 		Write-Host "`n          TESTES`n" -ForegroundColor DarkYellow
-		Write-Output "1 - Disgnóstico Rápido"
-		Write-OutPut "2 - Ping em repetição"
+		Write-Output "1 - Disgnostico Rapido"
+		Write-OutPut "2 - Ping em repeticao"
 		Write-Output "3 - Ping com LOG"
 		Write-Host "V/v " -ForegroundColor DarkRed -NoNewline
 		Write-Host "- Voltar"
 		
-		$opcRede = Read-Host "`nOpção"
+		$opcRede = Read-Host "`nOpcao"
 		
 			switch ($opcRede) {
 				"1" {
 					do {
 					$ip = Read-Host "`nDigite o IP"
 						if (IpParser $ip) {
-							$diagn = Test-NetConnection -ComputerName $ip
-							$diagn
+							$diagn = Test-NetConnection -RemoteAddress $ip
+							Write-OutPut $diagn
 							$continuar = Read-Host "`nContinuar no teste? (S/N)"
 						} else {
 							Write-Host "`nIP Inválido" -ForegroundColor Red
@@ -130,7 +130,7 @@ switch ($opcao) {
 							Write-Output "`nIniciando teste em outra janela..."
 							Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip"
 						} else {
-							Write-Host "`nIP Inválido" -ForegroundColor Red
+							Write-Host "`nIP Invalido" -ForegroundColor Red
 						}
 					$continuar = Read-Host "`nContinuar no teste? (S/N)"
 					} while ($continuar -ne "N" -and $continuar -ne "n")
@@ -145,13 +145,13 @@ switch ($opcao) {
 							Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip >> .\$($ip)_LOG.txt"
 							Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkGreen
 						} else {
-							Write-Host "`nIP Inválido" -ForegroundColor Red
+							Write-Host "`nIP Invalido" -ForegroundColor Red
 						}
 					$continuar = Read-Host "Continuar no teste com LOG? (S/N)"
 					} while ($continuar -ne "N"  -and $continuar -ne "n")
 				}
 				{"V", "v" -contains $_} { break }
-				default {Write-Host "`nEssa opção não existe!" -ForegroundColor Red}
+				default {Write-Host "`nEssa opcao não existe!" -ForegroundColor Red}
 			}
 			
 		} while ($opcRede -ne "V" -and $opcRede -ne "v")
@@ -159,11 +159,11 @@ switch ($opcao) {
 	"6" {
 		Write-Output "`nReiniciando serviço..." 
 		Waiting -Command {Restart-Service -Name Spooler}
-		Write-Host "Serviço reiniciado." -ForegroundColor Blue
+		Write-Host "Servico reiniciado." -ForegroundColor Blue
 		Write-Host "`nAperte qualquer tecla para continuar..."
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	{"S", "s" -contains $_} { break }
-	default {Write-Host "`nEssa opção não existe!" -ForegroundColor Red}
+	default {Write-Host "`nEssa opcao nao existe!" -ForegroundColor Red}
 }
 } while ($opcao -ne "S" -and $opcao -ne "s")
