@@ -71,6 +71,7 @@ function Waiting {
 
 switch ($opcao) {
 	"1" {
+		Write-Output "IPv4 de adaptadores"
 		Waiting -Command {Get-NetIPAddress -AddressFamily IPv4} |
 		Select-Object IPAddress, InterfaceAlias |
 		Format-Table -AutoSize
@@ -78,6 +79,7 @@ switch ($opcao) {
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"2" {
+		Write-Output "Impressoras instaladas"
 		Waiting -Command {Get-Printer} |
 		Select-Object Name, DriverName, Shared |
 		Format-Table -AutoSize
@@ -85,6 +87,7 @@ switch ($opcao) {
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"3" {
+		Write-Output "Drivers de impressoras"
 		Waiting -Command {Get-PrinterDriver} |
 		Select-Object Name, Manufacturer, PrinterEnvironment |
 		Format-Table -AutoSize
@@ -92,6 +95,7 @@ switch ($opcao) {
 		$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | OUT-NULL
 	}
 	"4" {
+		Write-Output "Portas do servidor de impressao"
 		Waiting -Command {Get-PrinterPort} |
 		Select-Object Name, Description, PortMonitor | 
 		Format-Table -AutoSize
@@ -112,6 +116,7 @@ switch ($opcao) {
 			switch ($opcRede) {
 				"1" {
 					do {
+					Write-OutPut "Diagnostico Rapido`n"
 					$ip = Read-Host "`nDigite o IP"
 						if (IpParser $ip) {
 							$diagn = Test-NetConnection -RemoteAddress $ip
@@ -125,6 +130,7 @@ switch ($opcao) {
 				}
 				"2" {
 					do {
+					Write-OutPut "`nPING"
 					$ip = Read-Host "`nDigite o IP"
 						if (IpParser $ip) {
 							Write-Output "`nIniciando teste em outra janela..."
@@ -137,11 +143,13 @@ switch ($opcao) {
 				}
 				"3" {
 					do {
+						Write-OutPut "`nPING c/ LOG"
 					$ip = Read-Host "`nDigite o IP"
 						if (IpParser $ip) {
 							Write-Output "`nIniciando teste..."
 							Write-Output "O LOG será escrito no mesmo local onde está o Script"
-							"TARGET = " + $ip | Out-File .\$($ip)_LOG.txt
+							$logfile = ".\$($ip)_LOG.txt"
+							[System.IO.File]::WriteAllText($logFile, "TARGET = $ip", [System.Text.Encoding]::UTF8)
 							Start-Process -FilePath cmd.exe -ArgumentList "/k", "ping -t $ip >> .\$($ip)_LOG.txt"
 							Write-Host "`nPara encerrar o LOG feche a cmd que foi aberta!`n" -ForegroundColor DarkGreen
 						} else {
