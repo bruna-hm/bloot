@@ -120,7 +120,7 @@ switch ($opcao) {
 					$ip = Read-Host "`nDigite o IP"
 						if (IpParser $ip) {
 							$diagn = Test-NetConnection -RemoteAddress $ip
-							Write-OutPut $diagn
+							Write-OutPut -InputObject $diagn 
 							$continuar = Read-Host "`nContinuar no teste? (S/N)"
 						} else {
 							Write-Host "`nIP Inválido" -ForegroundColor Red
